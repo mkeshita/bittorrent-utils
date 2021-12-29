@@ -464,7 +464,7 @@ http://127.0.0.1:[BITTORRENT_SPEED_PORT]/api/refresh_balance
 ## Donations
 
 * BTT/TRX/USDT (TRX20) TTijwYsndktUJbCHuW5oNPBWoWrJ5RV1iW
-* BTT (in-app) BFHYIrLExXfnWwdPCD827n6n/dhcU6d1TjL0xmbSb0977to4Zx5YOQ9vqkYxqTsQzjgZf2Pfltgt4Kt4cjmaeT0=
+* BTT (in-app) BHGaoDov6gsuHbfk2Tc0cAyHABw3hoKS2Cv1uBpA+/nVc1JikV6IxqEZ/5NlizPGFpvMtONMyBeJcXOIb4Jdnjk=
 
 ## [License](https://github.com/UkrainianHulk/bittorrent-utils/blob/main/LICENSE)
 Copyright (c) 2021 Yaroslav Sorochan
