@@ -1,12 +1,35 @@
 const config = require('config')
 const colors = require('colors')
+const fetch = require('node-fetch')
 const inAppTransfer = require('./libs/inAppTransfer.js')
 const ledgerRPC = require('./libs/ledgerRPC.js')
-const {isProduction, log, UBTTtoBTT, iteration} = require('./libs/utils.js')
+const bitTorrentSpeed = require('./libs/BitTorrentSpeed.js')
+const {UBTTtoBTT, iteration} = require('./libs/utils.js')
+const log = require('./libs/log.js')
 
-const payers = config.get('AUTOTRANSFER_PAYERS')
-const recipientKey = config.get('AUTOTRANSFER_RECIPIENT')
+const recipientKey = config.get('AUTOTRANSFER_TO')
 const historyAgeHours = config.get('AUTOTRANSFER_HISTORY_AGE_HOURS')
+
+const getBttPrice = async () => {
+    const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTTUSDT')
+    const json = await response.json()
+    const value = parseFloat(json.price)
+    return value
+}
+
+const getPayers = async () => {
+    try {
+        const configValue = config.get('AUTOTRANSFER_FROM')
+        if (configValue === 'auto') {
+            const payer = await bitTorrentSpeed.getPrivateKey()
+            log.info(`Local client private key: ${payer}`)
+            return [payer]
+        } else return configValue
+    } catch (error) {
+        log.error(error)
+        return []
+    }
+}
 
 const Hisotry = class {
     constructor(historyAgeHours) {
@@ -28,7 +51,7 @@ const Hisotry = class {
 
 const history = new Hisotry(historyAgeHours)
 
-const autoTransfer = async (payerPrivateKey, payerIndex) => {
+const autoTransfer = async (payerPrivateKey, payerIndex, payers) => {
     try {
         const transferResult = await inAppTransfer({
             payerIndex,
@@ -36,23 +59,41 @@ const autoTransfer = async (payerPrivateKey, payerIndex) => {
             recipientKey: recipientKey,
             amount: 'all'
         })
+
         history.push({
             payerIndex,
             paymentAmount: transferResult.paymentAmount,
             timestamp: Date.now()
         })
+        
         const recipientBalance = (await ledgerRPC.createAccount({
             key: recipientKey
         })).account.balance
 
-        log.info(`Payer #${payerIndex}: ` + UBTTtoBTT(transferResult.paymentAmount).toLocaleString().green + ' BTT -> ' + UBTTtoBTT(recipientBalance).toLocaleString().brightGreen + ' BTT')
+        const bttPrice = await getBttPrice()
+
+        const paymentAmountStr = UBTTtoBTT(transferResult.paymentAmount).toLocaleString()
+        const recipientBalanceStr = UBTTtoBTT(recipientBalance).toLocaleString()
+        const recipientBalancePriceStr = (UBTTtoBTT(recipientBalance) * bttPrice).toLocaleString()
+        const transferLogStr = `Payer #${payerIndex}: ${(paymentAmountStr).brightMagenta} -> ${(recipientBalanceStr + ' BTT').brightMagenta} (${(recipientBalancePriceStr + ' USDT').brightGreen})`
         
-        if (historyAgeHours) {
-            const globalProfit = UBTTtoBTT(history.getGlobalProfitability())
+        if (!historyAgeHours) log.info(transferLogStr)
+        else if (historyAgeHours) {
             const payerProfit = UBTTtoBTT(history.getPayerProfitability(payerIndex))
+            const globalProfit = UBTTtoBTT(history.getGlobalProfitability())
             const payerProfitPercent = Math.round(payerProfit/globalProfit*10000) / 100
-            log.info(`Payer #${payerIndex} last ${historyAgeHours} hour(s) profit: ${payerProfit.toLocaleString().cyan} BTT (${(payerProfitPercent + '%').cyan} of global)`)
-            log.info(`Global last ${historyAgeHours} hour(s) profit: ${globalProfit.toLocaleString().brightCyan} BTT`)
+
+            const payerProfitStr = payerProfit.toLocaleString()
+            const payerProfitPriceStr = (payerProfit * bttPrice).toLocaleString()
+            const globalProfitStr = globalProfit.toLocaleString()
+            const globalProfitPriceStr = (globalProfit * bttPrice).toLocaleString()
+            
+            const payerProfitLogStr = `, last ${historyAgeHours} hour(s) profit: ${(payerProfitStr + ' BTT').brightMagenta} (${(payerProfitPriceStr + ' USDT').brightGreen})`
+            if (payers.length === 1) {
+                log.info(transferLogStr + payerProfitLogStr)
+            } else {
+                log.info(transferLogStr + payerProfitLogStr + ` - ${payerProfitPercent}% of global ${(globalProfitStr + ' BTT').brightMagenta} (${(globalProfitPriceStr + ' USDT').brightGreen})`)
+            }
         }
 
         return
@@ -67,6 +108,7 @@ const autoTransfer = async (payerPrivateKey, payerIndex) => {
 const autoTransferIteration = (...args) => iteration(autoTransfer, config.get('AUTOTRANSFER_INTERVAL_SECONDS') * 1000, ...args)
 
 module.exports.start = async () => {
+    const payers = await getPayers()
     await Promise.all(payers.map(autoTransferIteration))
 }
 

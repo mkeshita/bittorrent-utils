@@ -3,7 +3,8 @@ const readline = require('readline')
 const colors = require('colors')
 const config = require('config')
 const ledgerRPC = require('./libs/ledgerRPC.js')
-const {numberToPercent, UBTTtoBTT, log} = require('./libs/utils.js')
+const {numberToPercent, UBTTtoBTT} = require('./libs/utils.js')
+const log = require('./libs/log.js')
 const inAppTransfer = require('./libs/inAppTransfer.js')
 const {PrivateKey, processKey} = require('./libs/keys.js')
 const rl = readline.createInterface({
@@ -65,7 +66,7 @@ const askConfirmation = async () => {
 }
 
 async function run() {
-    log.info(`You have launched the BTT in-app transfer utility.\nDon't worry, your private key will not be sent to anyone.\nRemember to check input data twice.\nFollow the program prompts...\n`)
+    log.info(`You have launched the BTT in-app transfer utility.\nRemember to check input data twice.\nFollow the program prompts...\n`)
     const payer = await askPayer()
     rl.pause()
     const payerBalance = (await ledgerRPC.createAccount({

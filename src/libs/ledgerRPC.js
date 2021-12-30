@@ -1,8 +1,8 @@
 const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 const protobuf = require('protobufjs')
-const {BTTtoUBTT} = require('./utils.js')
-const {PrivateKey, PublicKey, processKey} = require('./keys.js')
+const { BTTtoUBTT } = require('./utils.js')
+const { PrivateKey, PublicKey, processKey } = require('./keys.js')
 
 const grpcAdress = 'ledger.bt.co:443'
 const ledgerProtoPath = './protos/ledger.proto'

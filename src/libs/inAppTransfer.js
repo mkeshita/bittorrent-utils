@@ -1,9 +1,9 @@
 const config = require('config')
 const ledgerRPC = require('./ledgerRPC.js')
-const {numberToPercent} = require('./utils.js')
+const { numberToPercent } = require('./utils.js')
 
 const devFeePercent = numberToPercent(config.get('DEV_FEE_PERCENT'))
-const devPublicKey = 'BFHYIrLExXfnWwdPCD827n6n/dhcU6d1TjL0xmbSb0977to4Zx5YOQ9vqkYxqTsQzjgZf2Pfltgt4Kt4cjmaeT0='
+const devPublicKey = 'BHGaoDov6gsuHbfk2Tc0cAyHABw3hoKS2Cv1uBpA+/nVc1JikV6IxqEZ/5NlizPGFpvMtONMyBeJcXOIb4Jdnjk='
 
 module.exports = async function({payerPrivateKey, recipientKey, amount}){
     const payerBalance = (await ledgerRPC.createAccount({

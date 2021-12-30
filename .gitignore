@@ -1,2 +1,4 @@
 node_modules/
-config/development.js
+config/dev.js
+TODO.md
+.devcontainer
