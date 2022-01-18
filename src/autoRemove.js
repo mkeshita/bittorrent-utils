@@ -89,7 +89,7 @@ const autoRemove = async (client) => {
 
         log.info('Dedupe:')
 
-        console.table(dedupeHashList.map(t => ({
+        console.table(dedupeList.map(t => ({
             name: t.name,
             drive: path.parse(t.path).root,
             size: bytesToGB(t.size).toFixed(2) + ' GB',
