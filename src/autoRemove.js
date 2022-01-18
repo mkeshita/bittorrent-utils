@@ -78,7 +78,7 @@ const autoRemove = async (client) => {
 
     for (let i = sortedList.length - 1; i >= 0; i--) {
         const listItem = sortedList[i]
-        if (sortedList.slice(0, i).find(item => item.path === listItem.path)) {
+        if (sortedList.slice(0, i).find(item => item.name === listItem.name)) {
             dedupeList.push(sortedList.splice(i, 1)[0])
             i--
         }
