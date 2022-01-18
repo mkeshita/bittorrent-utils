@@ -2,22 +2,22 @@ const config = require('config')
 const BitTorrent = require('./libs/BitTorrent.js')
 
 class Client extends BitTorrent {
-    constructor(credentials, clientIndex) {
+    constructor(properties, index) {
         const {
             GUI_URL: guiUrl,
             USERNAME: username,
             PASSWORD: password,
             ...settings
-        } = credentials
+        } = properties
 
         super({guiUrl, username, password})
 
-        this.index = clientIndex
+        this.index = index
         this.settings = settings
     }
 }
 
-const clientsCredentials = config.get('CLIENTS')
-const clients = clientsCredentials.map((credentials, index) => new Client(credentials, index))
+const clientsData = config.get('CLIENTS')
+const clients = clientsData.map((credentials, index) => new Client(credentials, index))
 
 module.exports = clients
