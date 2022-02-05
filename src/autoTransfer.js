@@ -11,10 +11,10 @@ const recipientKey = config.get('AUTOTRANSFER_TO')
 const historyAgeHours = config.get('AUTOTRANSFER_HISTORY_AGE_HOURS')
 
 const getBttPrice = async () => {
-    const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTTUSDT')
+    const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTTCUSDT')
     const json = await response.json()
-    const value = parseFloat(json.price)
-    return value
+    const value = parseFloat(json.price) * 1000
+    return value 
 }
 
 const getPayers = async () => {
