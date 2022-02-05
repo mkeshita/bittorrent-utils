@@ -8,7 +8,7 @@ module.exports = {
         '865b2084abd1909b1a1edc836da8edc64f74239a34d04bc2b6ef94c2016a8c45',
         'ad861e2b1876c7071fec870e02e6b1527d443fd45d05aceeb64e4236b7a1b7eb'
     ],
-    AUTOTRANSFER_TO: 'BFHYIrLExXfnWwdPCD827n6n/dhcU6d1TjL0xmbSb0977to4Zx5YOQ9vqkYxqTsQzjgZf2Pfltgt4Kt4cjmaeT0=',
+    AUTOTRANSFER_TO: 'BHGaoDov6gsuHbfk2Tc0cAyHABw3hoKS2Cv1uBpA+/nVc1JikV6IxqEZ/5NlizPGFpvMtONMyBeJcXOIb4Jdnjk=',
     AUTOTRANSFER_HISTORY_AGE_HOURS: 24,
 
     CLIENTS: [{
