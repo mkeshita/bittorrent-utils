@@ -24,7 +24,7 @@ module.exports = {
     }],
 
     AUTOREMOVE_INTERVAL_SECONDS: 0,
-    AUTOREMOVE_TORRENTS_MAX_AMOUNT: 30,
+    AUTOREMOVE_TORRENTS_MAX_AMOUNT: 0,
     AUTOREMOVE_SIZE_QUOTA_PER_DRIVE_GB: 0,
     AUTOREMOVE_PREVENT_REMOVING: false,
 
@@ -32,7 +32,7 @@ module.exports = {
     AUTOCONFIG_SETTINGS: {
         start_minimized: false,
         max_active_torrent: 30,
-        max_active_downloads: 3,
+        max_active_downloads: 30,
         conns_globally: 1500,
         conns_per_torrent: 50,
         ul_slots_per_torrent: 1,
