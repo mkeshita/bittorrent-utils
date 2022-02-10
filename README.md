@@ -109,7 +109,7 @@ The script provides two config files:
 
 > **Q: What is the address of the withdrawal gateway?**
 >
-> **A:** [TTZu7wpHa9tnQjFUDrsjgPfXE7fck7yYs5](https://tronscan.org/#/address/TTZu7wpHa9tnQjFUDrsjgPfXE7fck7yYs5)
+> **A:** [TWaSm8dnvTdJQ9hcpW3g8m4QEfJspcuDwA](https://tronscan.org/#/address/TWaSm8dnvTdJQ9hcpW3g8m4QEfJspcuDwA)
 
 ## Support
 
